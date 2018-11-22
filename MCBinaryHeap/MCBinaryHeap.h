@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @protocol MCBinaryHeapObject <NSObject>
-- (NSComparisonResult)compare:(id)otherObject;
+- (NSComparisonResult)heap_compare:(id<MCBinaryHeapObject>)otherObject;
 @end
 
 @interface MCBinaryHeap : NSObject <NSCopying>
