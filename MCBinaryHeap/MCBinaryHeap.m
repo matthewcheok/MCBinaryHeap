@@ -17,7 +17,15 @@ static void heap_release(CFAllocatorRef all, const void *ptr) {
 }
 
 static CFComparisonResult heap_compare(const void *ptr1, const void *ptr2, void *info) {
-	return (CFComparisonResult)[(__bridge id)ptr1 compare:(__bridge id)ptr2];
+    id left = (__bridge id)ptr1;
+    id right = (__bridge id)ptr2;
+    if ([left conformsToProtocol:@protocol(MCBinaryHeapObject)] &&
+        [right conformsToProtocol:@protocol(MCBinaryHeapObject)])
+    {
+        return (CFComparisonResult)[(id<MCBinaryHeapObject>)left heap_compare:(id<MCBinaryHeapObject>)right];
+    } else {
+        return (CFComparisonResult)[left compare:right];
+    }
 }
 
 static void heap_apply(const void *val, void *context) {
